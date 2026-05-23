@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product – SKart</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.product-page { max-width: 1300px; margin: 0 auto; padding: 2rem; }
+.product-detail { display: grid; grid-template-columns: 1fr 1fr 360px; gap: 3rem; }
+.product-gallery {}
+.gallery-main {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10rem;
+  position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.gallery-main:hover { border-color: var(--primary); }
+.gallery-main .zoom-icon { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.1); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; font-size: 1rem; cursor: pointer; }
+.gallery-thumbs { display: flex; gap: 0.75rem; margin-top: 1rem; }
+.gallery-thumb {
+  width: 70px; height: 70px;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.gallery-thumb:hover, .gallery-thumb.active { border-color: var(--primary); }
+.product-info-detail {}
+.product-badge-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.product-badge { padding: 0.3rem 0.8rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; }
+.badge-sale { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: #f87171; }
+.badge-choice { background: rgba(40,116,240,0.15); border: 1px solid rgba(40,116,240,0.4); color: #60a5fa; }
+.badge-delivery { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4); color: #4ade80; }
+.product-detail-name { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.3; margin-bottom: 1rem; }
+.product-detail-rating { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.rating-pill { background: var(--success); color: white; padding: 0.3rem 0.75rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 4px; }
+.rating-text { font-size: 0.85rem; color: var(--text-secondary); }
+.verified-badge { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: var(--success); padding: 0.2rem 0.75rem; border-radius: 100px; font-size: 0.78rem; }
+.product-detail-price { margin-bottom: 1.5rem; }
+.detail-price-current { font-size: 2.5rem; font-weight: 900; display: flex; align-items: baseline; gap: 0.5rem; }
+.detail-price-current sup { font-size: 1.2rem; color: var(--text-secondary); }
+.detail-price-row { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.detail-original { color: var(--text-muted); text-decoration: line-through; font-size: 1rem; }
+.detail-off { background: var(--secondary); color: white; padding: 0.2rem 0.75rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; }
+.detail-bank { color: var(--success); font-size: 0.85rem; }
+.variants-section { margin-bottom: 1.5rem; }
+.variants-label { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+.variants { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.variant-btn { padding: 0.5rem 1rem; border: 2px solid var(--border); border-radius: 8px; background: var(--bg-card2); color: white; cursor: pointer; font-family: var(--font-body); font-size: 0.85rem; transition: all 0.2s; }
+.variant-btn.active, .variant-btn:hover { border-color: var(--primary); background: rgba(40,116,240,0.15); }
+.offers-section { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; }
+.offers-section h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
+.offer-item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-secondary); }
+.offer-item:last-child { margin-bottom: 0; }
+.offer-tag { background: var(--success); color: white; padding: 0.1rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem; flex-shrink: 0; height: fit-content; margin-top: 2px; }
+.delivery-section { margin-bottom: 1.5rem; }
+.delivery-row { display: flex; gap: 1rem; align-items: flex-start; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.delivery-row:last-child { border-bottom: none; }
+.delivery-icon { font-size: 1.2rem; flex-shrink: 0; }
+.delivery-text strong { display: block; margin-bottom: 2px; }
+.delivery-text span { color: var(--text-muted); font-size: 0.82rem; }
+
+/* Buy panel */
+.buy-panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; height: fit-content; position: sticky; top: 120px; }
+.buy-price { font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
+.buy-delivery { color: var(--success); font-size: 0.9rem; margin-bottom: 1.5rem; }
+.qty-selector { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.qty-selector label { font-size: 0.9rem; color: var(--text-secondary); }
+.qty-select { background: var(--bg-card2); border: 1px solid var(--border); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-family: var(--font-body); }
+.buy-actions { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+.btn-add-cart { background: var(--warning); color: #1a1a1a; border: none; padding: 1rem; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: all 0.3s; font-family: var(--font-body); }
+.btn-add-cart:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,158,11,0.4); }
+.btn-buy-now { background: var(--primary); color: white; border: none; padding: 1rem; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: all 0.3s; font-family: var(--font-body); }
+.btn-buy-now:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+.seller-info { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; }
+.seller-info h5 { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.seller-name { font-weight: 700; margin-bottom: 0.25rem; }
+.seller-rating { font-size: 0.8rem; color: var(--success); }
+
+/* Specs */
+.specs-section { margin-top: 3rem; }
+.specs-section h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.5rem; }
+.specs-table { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.spec-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid var(--border); }
+.spec-row:last-child { border-bottom: none; }
+.spec-key { padding: 1rem 1.5rem; background: var(--bg-card2); color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+.spec-val { padding: 1rem 1.5rem; font-size: 0.9rem; }
+@media(max-width: 1100px) { .product-detail { grid-template-columns: 1fr 1fr; } .buy-panel { display: none; } }
+@media(max-width: 700px) { .product-detail { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="preloader"><div class="preloader-inner"><div class="preloader-logo"><span class="s-letter">S</span><span class="kart-text">Kart</span></div><div class="preloader-bar"><div class="preloader-fill"></div></div></div></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<div class="announcement-bar"><div class="announcement-track"><span>🎉 MEGA SALE — Up to 80% OFF</span><span>🚚 FREE Delivery on ₹499+</span><span>💎 SKart Plus — Extra 15% OFF</span><span>🎉 MEGA SALE — Up to 80% OFF</span></div></div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">S</div><div class="logo-text">Kart</div></a>
+    <div class="nav-search" style="flex:1;max-width:500px">
+      <div class="search-box">
+        <input type="text" placeholder="Search products..." style="border-radius:4px">
+        <button class="search-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2.5"/><path d="m21 21-4.35-4.35" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-cart"><div class="cart-icon">🛒</div><div class="cart-badge" id="cartBadge">0</div><span class="cart-label">Cart</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="product-page">
+  <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem">
+    <a href="index.html" style="color:var(--primary)">Home</a> › <a href="products.html" style="color:var(--primary)">Electronics</a> › <span>Apple iPhone 16 Pro Max</span>
+  </div>
+
+  <div class="product-detail">
+    <!-- Gallery -->
+    <div class="product-gallery">
+      <div class="gallery-main">
+        📱
+        <button class="zoom-icon">🔍</button>
+      </div>
+      <div class="gallery-thumbs">
+        <div class="gallery-thumb active">📱</div>
+        <div class="gallery-thumb">📷</div>
+        <div class="gallery-thumb">⚡</div>
+        <div class="gallery-thumb">🎧</div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="product-info-detail">
+      <div class="product-badge-row">
+        <span class="product-badge badge-choice">✨ SKart's Choice</span>
+        <span class="product-badge badge-sale">🔥 Super Hot Deal</span>
+        <span class="product-badge badge-delivery">⚡ Fast Delivery</span>
+      </div>
+      <h1 class="product-detail-name">Apple iPhone 16 Pro Max 256GB – Desert Titanium</h1>
+
+      <div class="product-detail-rating">
+        <div class="rating-pill">4.8 ★</div>
+        <span class="rating-text">12,847 Ratings & 4,291 Reviews</span>
+        <span class="verified-badge">✅ Verified Seller</span>
+      </div>
+
+      <div class="product-detail-price">
+        <div class="detail-price-current"><sup>₹</sup>1,34,900</div>
+        <div class="detail-price-row">
+          <span class="detail-original">₹1,59,900</span>
+          <span class="detail-off">16% OFF</span>
+        </div>
+        <div class="detail-bank" style="margin-top:0.5rem">💳 Extra 5% off with SKart Axis Bank Card</div>
+      </div>
+
+      <div class="variants-section">
+        <div class="variants-label">Storage: <strong>256GB</strong></div>
+        <div class="variants">
+          <button class="variant-btn active">256GB</button>
+          <button class="variant-btn">512GB</button>
+          <button class="variant-btn">1TB</button>
+        </div>
+      </div>
+      <div class="variants-section">
+        <div class="variants-label">Color: <strong>Desert Titanium</strong></div>
+        <div class="variants">
+          <button class="variant-btn active">Desert Titanium</button>
+          <button class="variant-btn">Black Titanium</button>
+          <button class="variant-btn">Natural Titanium</button>
+          <button class="variant-btn">White Titanium</button>
+        </div>
+      </div>
+
+      <div class="offers-section">
+        <h4>🎁 Available Offers</h4>
+        <div class="offer-item"><span class="offer-tag">Bank</span> 10% off on SKart Axis Bank Card EMI transactions. Min. ₹10,000</div>
+        <div class="offer-item"><span class="offer-tag">EMI</span> No-Cost EMI starting ₹11,242/month on all EMI options</div>
+        <div class="offer-item"><span class="offer-tag">Exchange</span> Up to ₹45,000 off on exchange with your old phone</div>
+        <div class="offer-item"><span class="offer-tag">Plus</span> SKart Plus Members get extra 10% cashback</div>
+      </div>
+
+      <div class="delivery-section">
+        <div class="delivery-row">
+          <span class="delivery-icon">🚀</span>
+          <div class="delivery-text"><strong>FREE Delivery Tomorrow</strong><span>Order within 2 hrs 34 mins</span></div>
+        </div>
+        <div class="delivery-row">
+          <span class="delivery-icon">↩️</span>
+          <div class="delivery-text"><strong>10 Days Return Policy</strong><span>No questions asked return</span></div>
+        </div>
+        <div class="delivery-row">
+          <span class="delivery-icon">🛡️</span>
+          <div class="delivery-text"><strong>1 Year Manufacturer Warranty</strong><span>+ SKart Protection Plan available</span></div>
+        </div>
+        <div class="delivery-row">
+          <span class="delivery-icon">💎</span>
+          <div class="delivery-text"><strong>100% Genuine Product</strong><span>SKart Certified & AI-verified</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buy Panel -->
+    <div class="buy-panel">
+      <div class="buy-price">₹1,34,900</div>
+      <div class="buy-delivery">🚀 FREE delivery Tomorrow</div>
+      <div class="qty-selector">
+        <label>Qty:</label>
+        <select class="qty-select">
+          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+        </select>
+      </div>
+      <div class="buy-actions">
+        <button class="btn-add-cart" onclick="addToCart(1)">🛒 Add to Cart</button>
+        <button class="btn-buy-now" onclick="window.location.href='checkout.html'">⚡ Buy Now</button>
+      </div>
+      <div>
+        <button style="width:100%;background:none;border:2px solid var(--border);color:white;padding:0.75rem;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-weight:600;transition:all 0.3s" onmouseover="this.style.borderColor='var(--secondary)'" onmouseout="this.style.borderColor='var(--border)'">🤍 Add to Wishlist</button>
+      </div>
+      <div class="seller-info">
+        <h5>Sold By</h5>
+        <div class="seller-name">AppleOfficial India</div>
+        <div class="seller-rating">★ 4.9 · Verified Seller · 98.7% Positive Feedback</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specs -->
+  <div class="specs-section">
+    <h3>Product Specifications</h3>
+    <div class="specs-table">
+      <div class="spec-row"><div class="spec-key">Brand</div><div class="spec-val">Apple</div></div>
+      <div class="spec-row"><div class="spec-key">Model</div><div class="spec-val">iPhone 16 Pro Max</div></div>
+      <div class="spec-row"><div class="spec-key">Processor</div><div class="spec-val">Apple A18 Pro Chip (3nm)</div></div>
+      <div class="spec-row"><div class="spec-key">RAM</div><div class="spec-val">8GB</div></div>
+      <div class="spec-row"><div class="spec-key">Storage</div><div class="spec-val">256GB</div></div>
+      <div class="spec-row"><div class="spec-key">Display</div><div class="spec-val">6.9-inch Super Retina XDR OLED, 2868×1320, 460 ppi</div></div>
+      <div class="spec-row"><div class="spec-key">Camera</div><div class="spec-val">48MP Fusion + 48MP Ultra Wide + 12MP 5x Telephoto</div></div>
+      <div class="spec-row"><div class="spec-key">Battery</div><div class="spec-val">4685 mAh, Fast Charging, MagSafe Wireless</div></div>
+      <div class="spec-row"><div class="spec-key">OS</div><div class="spec-val">iOS 18</div></div>
+      <div class="spec-row"><div class="spec-key">Connectivity</div><div class="spec-val">5G, Wi-Fi 7, Bluetooth 5.3, USB-C</div></div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div style="margin-top:3rem">
+    <h3 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:1.5rem">Similar Products</h3>
+    <div class="products-grid" id="relatedGrid"></div>
+  </div>
+</div>
+
+<div class="cart-notification" id="cartNotification"><span>✅</span> Item added to cart!</div>
+<button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+<footer class="footer">
+  <div class="footer-bottom"><div class="footer-container" style="display:flex;justify-content:space-between;align-items:center;">
+    <p>© 2024 SKart Private Limited. All rights reserved.</p>
+    <p class="footer-india">🇮🇳 Made with ❤️ in India</p>
+  </div></div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hidden');
+    const grid = document.getElementById('relatedGrid');
+    products.slice(1, 5).forEach((p, i) => {
+      const card = createProductCard(p);
+      card.style.animationDelay = `${i * 0.1}s`;
+      grid.appendChild(card);
+    });
+    document.getElementById('cartBadge').textContent = cart.length;
+  }, 1500);
+});
+document.querySelectorAll('.variant-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    this.closest('.variants').querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products – SKart</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.products-page { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto; padding: 2rem; }
+.filters-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky; top: 110px;
+}
+.filters-panel h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; justify-content: space-between; }
+.filter-section { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+.filter-section:last-child { border-bottom: none; }
+.filter-section h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.filter-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.4rem 0; cursor: pointer; }
+.filter-option input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+.filter-option label { font-size: 0.9rem; cursor: pointer; color: var(--text-secondary); transition: color 0.2s; }
+.filter-option:hover label { color: white; }
+.price-range { width: 100%; }
+.price-range input[type="range"] { width: 100%; accent-color: var(--primary); }
+.price-vals { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; }
+.products-main {}
+.products-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; gap: 1rem;
+}
+.products-count { font-size: 0.9rem; color: var(--text-secondary); }
+.products-count span { color: white; font-weight: 700; }
+.sort-select {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.sort-select:focus { outline: none; border-color: var(--primary); }
+.view-toggle { display: flex; gap: 0.5rem; }
+.view-btn {
+  width: 36px; height: 36px;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.view-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+.products-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+.filter-clear { background: none; border: 1px solid var(--secondary); color: var(--secondary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-family: var(--font-body); }
+.active-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.active-filter-tag { background: rgba(40,116,240,0.15); border: 1px solid var(--primary); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 100px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+.active-filter-tag button { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.9rem; }
+.breadcrumb { padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); max-width: 1400px; margin: 0 auto; }
+.breadcrumb a { color: var(--primary); }
+.breadcrumb span { color: var(--text-muted); }
+@media(max-width: 900px) { .products-page { grid-template-columns: 1fr; } .filters-panel { display: none; } }
+</style>
+</head>
+<body>
+<div id="preloader"><div class="preloader-inner"><div class="preloader-logo"><span class="s-letter">S</span><span class="kart-text">Kart</span></div><div class="preloader-bar"><div class="preloader-fill"></div></div></div></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<div class="announcement-bar"><div class="announcement-track"><span>🎉 MEGA SALE — Up to 80% OFF</span><span>🚚 FREE Delivery on ₹499+</span><span>💎 SKart Plus — Extra 15% OFF</span><span>🎉 MEGA SALE — Up to 80% OFF</span><span>🚚 FREE Delivery on ₹499+</span></div></div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">S</div><div class="logo-text">Kart</div></a>
+    <div class="nav-search" style="flex:1;max-width:600px">
+      <div class="search-box">
+        <div class="search-category">All <span>▾</span></div>
+        <input type="text" placeholder="Search products, brands..." id="searchInput">
+        <button class="search-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2.5"/><path d="m21 21-4.35-4.35" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-cart"><div class="cart-icon">🛒</div><div class="cart-badge" id="cartBadge">0</div><span class="cart-label">Cart</span></a>
+      <a href="account.html" class="nav-btn"><div class="nav-btn-icon">👤</div><div class="nav-btn-text"><span class="nav-btn-label">Hello, Sign In</span><span class="nav-btn-main">Account</span></div></a>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="category-nav"><div class="cat-nav-container">
+    <a href="products.html?cat=electronics" class="cat-link">Electronics</a>
+    <a href="products.html?cat=mobiles" class="cat-link">Mobiles</a>
+    <a href="products.html?cat=fashion" class="cat-link">Fashion</a>
+    <a href="products.html?cat=appliances" class="cat-link">Appliances</a>
+    <a href="products.html?cat=furniture" class="cat-link">Furniture</a>
+    <a href="products.html?cat=beauty" class="cat-link">Beauty</a>
+    <a href="products.html?cat=grocery" class="cat-link">Grocery</a>
+    <a href="#" class="cat-link highlight">⚡ Today's Deals</a>
+  </div></div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a> <span>›</span>
+  <span id="breadcrumbCat">All Products</span>
+</div>
+
+<div class="products-page">
+  <!-- Filters -->
+  <aside class="filters-panel">
+    <h3>Filters <button class="filter-clear">Clear All</button></h3>
+
+    <div class="filter-section">
+      <h4>Price Range</h4>
+      <input type="range" class="price-range" min="0" max="200000" value="200000" oninput="updatePrice(this.value)">
+      <div class="price-vals"><span>₹0</span><span id="priceMax">₹2,00,000</span></div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Brand</h4>
+      <div class="filter-option"><input type="checkbox" id="apple"><label for="apple">Apple</label></div>
+      <div class="filter-option"><input type="checkbox" id="samsung"><label for="samsung">Samsung</label></div>
+      <div class="filter-option"><input type="checkbox" id="sony"><label for="sony">Sony</label></div>
+      <div class="filter-option"><input type="checkbox" id="nike"><label for="nike">Nike</label></div>
+      <div class="filter-option"><input type="checkbox" id="oneplus"><label for="oneplus">OnePlus</label></div>
+      <div class="filter-option"><input type="checkbox" id="boat"><label for="boat">Boat</label></div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Customer Rating</h4>
+      <div class="filter-option"><input type="checkbox" id="r4"><label for="r4">★★★★★ 4 & above</label></div>
+      <div class="filter-option"><input type="checkbox" id="r3"><label for="r3">★★★★☆ 3 & above</label></div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Discount</h4>
+      <div class="filter-option"><input type="checkbox" id="d50"><label for="d50">50% or more</label></div>
+      <div class="filter-option"><input type="checkbox" id="d40"><label for="d40">40% or more</label></div>
+      <div class="filter-option"><input type="checkbox" id="d30"><label for="d30">30% or more</label></div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Availability</h4>
+      <div class="filter-option"><input type="checkbox" id="instock"><label for="instock">In Stock Only</label></div>
+      <div class="filter-option"><input type="checkbox" id="fastdel"><label for="fastdel">Fast Delivery</label></div>
+    </div>
+  </aside>
+
+  <!-- Products -->
+  <main class="products-main">
+    <div class="products-topbar">
+      <div class="products-count">Showing <span id="productCount">12</span> results</div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <select class="sort-select" onchange="sortProducts(this.value)">
+          <option value="popularity">Sort by: Popularity</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Customer Rating</option>
+          <option value="discount">Best Discount</option>
+          <option value="newest">Newest First</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('grid', this)">⊞</button>
+          <button class="view-btn" onclick="setView('list', this)">≡</button>
+        </div>
+      </div>
+    </div>
+    <div class="active-filters" id="activeFilters"></div>
+    <div class="products-grid-full" id="productsGridFull"></div>
+  </main>
+</div>
+
+<div class="cart-notification" id="cartNotification"><span>✅</span> Item added to cart!</div>
+<button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+<footer class="footer">
+  <div class="footer-bottom"><div class="footer-container" style="display:flex;justify-content:space-between;align-items:center;">
+    <p>© 2024 SKart Private Limited. All rights reserved.</p>
+    <p class="footer-india">🇮🇳 Made with ❤️ in India</p>
+  </div></div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const cat = urlParams.get('cat') || 'all';
+const q = urlParams.get('q') || '';
+
+if (q) {
+  document.getElementById('searchInput').value = q;
+  document.getElementById('breadcrumbCat').textContent = `Search: "${q}"`;
+} else if (cat !== 'all') {
+  document.getElementById('breadcrumbCat').textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+}
+
+function renderAllProducts() {
+  const grid = document.getElementById('productsGridFull');
+  grid.innerHTML = '';
+  let filtered = products;
+  if (cat !== 'all') filtered = filtered.filter(p => p.category === cat || p.name.toLowerCase().includes(cat));
+  if (q) filtered = filtered.filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || p.brand.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('productCount').textContent = filtered.length;
+  filtered.forEach((p, i) => {
+    const card = createProductCard(p, false);
+    card.style.animationDelay = `${i * 0.08}s`;
+    grid.appendChild(card);
+  });
+}
+
+function updatePrice(val) {
+  document.getElementById('priceMax').textContent = '₹' + parseInt(val).toLocaleString();
+}
+
+function sortProducts(val) { renderAllProducts(); }
+
+function setView(type, btn) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hidden');
+    renderAllProducts();
+  }, 1500);
+});
+</script>
+</body>
+</html>

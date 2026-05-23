@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Cart – SKart</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.cart-page { max-width: 1300px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 1fr 380px; gap: 2rem; }
+.cart-main {}
+.cart-header { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+.cart-header h2 { font-family: var(--font-display); font-size: 1.5rem; }
+.cart-header p { color: var(--text-muted); font-size: 0.9rem; }
+.cart-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 1.5rem;
+  align-items: start;
+  transition: all 0.3s;
+  animation: fadeInUp 0.5s ease both;
+}
+.cart-item:hover { border-color: var(--primary); }
+.cart-item-img {
+  width: 120px; height: 120px;
+  background: var(--bg-card2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem;
+}
+.cart-item-details {}
+.cart-item-brand { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.cart-item-name { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.cart-item-price { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
+.cart-item-price .current { font-size: 1.3rem; font-weight: 800; }
+.cart-item-price .original { font-size: 0.85rem; color: var(--text-muted); text-decoration: line-through; }
+.cart-item-price .saved { font-size: 0.85rem; color: var(--success); font-weight: 600; }
+.cart-item-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.cart-qty { display: flex; align-items: center; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.cart-qty button { background: var(--bg-card2); border: none; color: white; width: 36px; height: 36px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
+.cart-qty button:hover { background: var(--primary); }
+.cart-qty span { width: 40px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 700; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+.btn-remove { background: none; border: none; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; transition: color 0.2s; font-family: var(--font-body); padding: 0 0.5rem; }
+.btn-remove:hover { color: var(--secondary); }
+.btn-wishlist { background: none; border: none; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; transition: color 0.2s; font-family: var(--font-body); padding: 0 0.5rem; }
+.btn-wishlist:hover { color: var(--secondary); }
+.delivery-info { font-size: 0.82rem; color: var(--success); margin-top: 0.5rem; }
+.cart-item-right { text-align: right; }
+.cart-empty { text-align: center; padding: 5rem 2rem; }
+.cart-empty-icon { font-size: 5rem; margin-bottom: 1rem; animation: iconFloat 3s ease-in-out infinite; }
+.cart-empty h3 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+.cart-empty p { color: var(--text-secondary); margin-bottom: 2rem; }
+
+/* Order Summary */
+.order-summary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky; top: 120px;
+}
+.order-summary h3 { font-size: 1rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.95rem; }
+.summary-row.discount { color: var(--success); }
+.summary-row.total { font-size: 1.1rem; font-weight: 800; margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+.summary-row.savings { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 0.75rem; color: var(--success); font-weight: 600; justify-content: center; text-align: center; margin: 1rem 0; }
+.promo-box { margin: 1.5rem 0; }
+.promo-box input { width: 100%; background: var(--bg-card2); border: 1px solid var(--border); color: white; padding: 0.75rem 1rem; border-radius: 8px 0 0 8px; font-family: var(--font-body); font-size: 0.9rem; }
+.promo-row { display: flex; }
+.promo-row input { flex: 1; border-radius: 8px 0 0 8px; }
+.promo-row button { background: var(--primary); border: none; color: white; padding: 0.75rem 1.2rem; border-radius: 0 8px 8px 0; cursor: pointer; font-weight: 700; font-family: var(--font-body); }
+.checkout-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 1.2rem; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: var(--font-body); margin-top: 1rem; transition: all 0.3s; box-shadow: 0 4px 20px var(--primary-glow); }
+.checkout-btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 30px var(--primary-glow); }
+.safety-badges { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-muted); }
+.safety-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.safety-badge span:first-child { font-size: 1.3rem; }
+@media(max-width: 900px) { .cart-page { grid-template-columns: 1fr; } .cart-item { grid-template-columns: 80px 1fr; } .cart-item-right { display: none; } }
+</style>
+</head>
+<body>
+<div id="preloader"><div class="preloader-inner"><div class="preloader-logo"><span class="s-letter">S</span><span class="kart-text">Kart</span></div><div class="preloader-bar"><div class="preloader-fill"></div></div></div></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<div class="announcement-bar"><div class="announcement-track"><span>🎉 MEGA SALE — Up to 80% OFF</span><span>🚚 FREE Delivery on ₹499+</span><span>💎 SKart Plus — Extra 15% OFF</span><span>🎉 MEGA SALE — Up to 80% OFF</span><span>🚚 FREE Delivery on ₹499+</span></div></div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">S</div><div class="logo-text">Kart</div></a>
+    <div class="nav-search" style="flex:1;max-width:500px">
+      <div class="search-box">
+        <input type="text" placeholder="Search products..." style="border-radius:4px">
+        <button class="search-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2.5"/><path d="m21 21-4.35-4.35" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-cart"><div class="cart-icon">🛒</div><div class="cart-badge" id="cartBadge">0</div><span class="cart-label">Cart</span></a>
+    </div>
+  </div>
+</nav>
+
+<div style="max-width:1300px;margin:1rem auto;padding:0 2rem;font-size:0.85rem;color:var(--text-muted);">
+  <a href="index.html" style="color:var(--primary)">Home</a> › <span>My Cart</span>
+</div>
+
+<div class="cart-page">
+  <div class="cart-main" id="cartMain">
+    <!-- Dynamic -->
+  </div>
+
+  <aside class="order-summary">
+    <h3>Order Summary</h3>
+    <div class="summary-row"><span>Price (<span id="itemCount">0</span> items)</span><span id="totalPrice">₹0</span></div>
+    <div class="summary-row discount"><span>Discount</span><span id="totalDiscount">-₹0</span></div>
+    <div class="summary-row"><span>Delivery Charges</span><span style="color:var(--success)">FREE</span></div>
+    <div class="summary-row"><span>Platform Fee</span><span>₹3</span></div>
+    <div class="summary-row savings"><span>🎉 You save ₹<span id="savingsAmt">0</span> on this order!</span></div>
+    <div class="summary-row total"><span>Total Amount</span><span id="finalTotal">₹0</span></div>
+
+    <div class="promo-box">
+      <div class="promo-row">
+        <input type="text" placeholder="Enter Promo Code" id="promoInput">
+        <button onclick="applyPromo()">Apply</button>
+      </div>
+    </div>
+
+    <button class="checkout-btn" onclick="window.location.href='checkout.html'">Proceed to Checkout →</button>
+
+    <div class="safety-badges">
+      <div class="safety-badge"><span>🔒</span><span>Secure</span></div>
+      <div class="safety-badge"><span>↩️</span><span>Easy Returns</span></div>
+      <div class="safety-badge"><span>✅</span><span>Genuine</span></div>
+    </div>
+  </aside>
+</div>
+
+<footer class="footer">
+  <div class="footer-bottom"><div class="footer-container" style="display:flex;justify-content:space-between;align-items:center;">
+    <p>© 2024 SKart Private Limited. All rights reserved.</p>
+    <p class="footer-india">🇮🇳 Made with ❤️ in India</p>
+  </div></div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+const sampleCart = [
+  { id: 1, name: 'Apple iPhone 16 Pro Max 256GB', brand: 'Apple', price: 134900, original: 159900, emoji: '📱', qty: 1 },
+  { id: 3, name: 'Sony WH-1000XM6 Wireless Headphones', brand: 'Sony', price: 24999, original: 34990, emoji: '🎧', qty: 1 },
+  { id: 4, name: 'Nike Air Max 270 Running Shoes', brand: 'Nike', price: 8499, original: 14995, emoji: '👟', qty: 2 },
+];
+
+let cartItems = JSON.parse(localStorage.getItem('skartCart') || 'null') || sampleCart;
+
+function renderCart() {
+  const main = document.getElementById('cartMain');
+  if (!cartItems.length) {
+    main.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><h3>Your cart is empty</h3><p>Add items to your cart to see them here</p><a href="index.html" class="btn-primary">Continue Shopping</a></div>`;
+    return;
+  }
+
+  main.innerHTML = `<div class="cart-header"><div><h2>My Cart 🛒</h2><p>${cartItems.length} item${cartItems.length > 1 ? 's' : ''} in cart</p></div></div>`;
+
+  cartItems.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'cart-item';
+    el.style.animationDelay = `${i * 0.1}s`;
+    el.innerHTML = `
+      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-details">
+        <div class="cart-item-brand">${item.brand}</div>
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">
+          <span class="current">₹${(item.price * (item.qty||1)).toLocaleString()}</span>
+          <span class="original">₹${item.original.toLocaleString()}</span>
+          <span class="saved">You save ₹${((item.original - item.price) * (item.qty||1)).toLocaleString()}</span>
+        </div>
+        <div class="delivery-info">🚀 FREE Delivery by Tomorrow</div>
+        <div class="cart-item-actions">
+          <div class="cart-qty">
+            <button onclick="updateQty(${i}, -1)">−</button>
+            <span id="qty-${i}">${item.qty || 1}</span>
+            <button onclick="updateQty(${i}, 1)">+</button>
+          </div>
+          <button class="btn-remove" onclick="removeItem(${i})">🗑 Remove</button>
+          <button class="btn-wishlist" onclick="saveWishlist(${i})">🤍 Wishlist</button>
+        </div>
+      </div>
+    `;
+    main.appendChild(el);
+  });
+
+  updateSummary();
+}
+
+function updateQty(i, delta) {
+  cartItems[i].qty = Math.max(1, (cartItems[i].qty || 1) + delta);
+  renderCart();
+}
+
+function removeItem(i) {
+  cartItems.splice(i, 1);
+  localStorage.setItem('skartCart', JSON.stringify(cartItems));
+  renderCart();
+}
+
+function saveWishlist(i) {
+  alert('Added to Wishlist! ❤️');
+}
+
+function updateSummary() {
+  const total = cartItems.reduce((a, b) => a + b.price * (b.qty || 1), 0);
+  const original = cartItems.reduce((a, b) => a + b.original * (b.qty || 1), 0);
+  const discount = original - total;
+  const count = cartItems.reduce((a, b) => a + (b.qty || 1), 0);
+  document.getElementById('itemCount').textContent = count;
+  document.getElementById('totalPrice').textContent = '₹' + original.toLocaleString();
+  document.getElementById('totalDiscount').textContent = '-₹' + discount.toLocaleString();
+  document.getElementById('savingsAmt').textContent = discount.toLocaleString();
+  document.getElementById('finalTotal').textContent = '₹' + (total + 3).toLocaleString();
+  document.getElementById('cartBadge').textContent = count;
+}
+
+function applyPromo() {
+  const code = document.getElementById('promoInput').value.toUpperCase();
+  if (code === 'SKART100') { alert('✅ Promo code applied! ₹100 off'); }
+  else { alert('❌ Invalid promo code. Try SKART100'); }
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('preloader').classList.add('hidden'); renderCart(); }, 1500);
+});
+</script>
+</body>
+</html>

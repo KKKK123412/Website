@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKart – India's Premium Shopping Destination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo">
+      <span class="s-letter">S</span><span class="kart-text">Kart</span>
+    </div>
+    <div class="preloader-bar"><div class="preloader-fill"></div></div>
+    <div class="preloader-tagline">Loading Excellence...</div>
+  </div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar">
+  <div class="announcement-track">
+    <span>🎉 GRAND LAUNCH SALE — Up to 80% OFF on 1 Million+ Products</span>
+    <span>🚚 FREE Delivery on orders above ₹499</span>
+    <span>💎 SKart Plus Members get EXTRA 15% OFF</span>
+    <span>📱 Download SKart App — Exclusive App-Only Deals</span>
+    <span>🎉 GRAND LAUNCH SALE — Up to 80% OFF on 1 Million+ Products</span>
+    <span>🚚 FREE Delivery on orders above ₹499</span>
+    <span>💎 SKart Plus Members get EXTRA 15% OFF</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">S</div>
+      <div class="logo-text">Kart</div>
+    </a>
+
+    <!-- Location -->
+    <div class="nav-location">
+      <div class="location-icon">📍</div>
+      <div class="location-text">
+        <span class="loc-label">Deliver to</span>
+        <span class="loc-pin">Mumbai 400001</span>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="nav-search">
+      <div class="search-box">
+        <div class="search-category">All<span>▾</span></div>
+        <input type="text" placeholder="Search for products, brands and more..." id="searchInput">
+        <button class="search-btn" onclick="performSearch()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2.5"/><path d="m21 21-4.35-4.35" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
+
+    <!-- Nav Actions -->
+    <div class="nav-actions">
+      <a href="account.html" class="nav-btn">
+        <div class="nav-btn-icon">👤</div>
+        <div class="nav-btn-text">
+          <span class="nav-btn-label">Hello, Sign In</span>
+          <span class="nav-btn-main">Account & Lists ▾</span>
+        </div>
+      </a>
+      <a href="orders.html" class="nav-btn">
+        <div class="nav-btn-icon">📦</div>
+        <div class="nav-btn-text">
+          <span class="nav-btn-label">Returns</span>
+          <span class="nav-btn-main">& Orders</span>
+        </div>
+      </a>
+      <a href="cart.html" class="nav-cart">
+        <div class="cart-icon">🛒</div>
+        <div class="cart-badge" id="cartBadge">0</div>
+        <span class="cart-label">Cart</span>
+      </a>
+    </div>
+
+    <!-- Hamburger -->
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Category Nav -->
+  <div class="category-nav">
+    <div class="cat-nav-container">
+      <a href="products.html?cat=electronics" class="cat-link">Electronics</a>
+      <a href="products.html?cat=mobiles" class="cat-link">Mobiles</a>
+      <a href="products.html?cat=fashion" class="cat-link">Fashion</a>
+      <a href="products.html?cat=appliances" class="cat-link">Appliances</a>
+      <a href="products.html?cat=furniture" class="cat-link">Furniture</a>
+      <a href="products.html?cat=beauty" class="cat-link">Beauty</a>
+      <a href="products.html?cat=grocery" class="cat-link">Grocery</a>
+      <a href="products.html?cat=toys" class="cat-link">Toys</a>
+      <a href="products.html?cat=sports" class="cat-link">Sports</a>
+      <a href="products.html?cat=automotive" class="cat-link">Automotive</a>
+      <a href="#" class="cat-link highlight">⚡ Today's Deals</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <span>Hello, User 👋</span>
+    <button onclick="toggleMobileMenu()">✕</button>
+  </div>
+  <a href="products.html?cat=electronics">Electronics</a>
+  <a href="products.html?cat=mobiles">Mobiles</a>
+  <a href="products.html?cat=fashion">Fashion</a>
+  <a href="products.html?cat=appliances">Appliances</a>
+  <a href="products.html?cat=furniture">Furniture</a>
+  <a href="cart.html">🛒 My Cart</a>
+  <a href="orders.html">📦 My Orders</a>
+  <a href="account.html">👤 My Account</a>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <!-- Hero Slider -->
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide active" style="background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);">
+      <div class="hero-content">
+        <div class="hero-badge">🔥 MEGA SALE</div>
+        <h1 class="hero-title">The Future<br><span class="hero-title-accent">of Shopping</span><br>is Here</h1>
+        <p class="hero-subtitle">Discover 10 Million+ products at unbeatable prices</p>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num" data-target="10">0</span>M+<div class="stat-label">Products</div></div>
+          <div class="stat"><span class="stat-num" data-target="50">0</span>K+<div class="stat-label">Brands</div></div>
+          <div class="stat"><span class="stat-num" data-target="200">0</span>M+<div class="stat-label">Customers</div></div>
+        </div>
+        <div class="hero-cta">
+          <a href="products.html" class="btn-primary">Shop Now</a>
+          <a href="#deals" class="btn-secondary">View Deals</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-card card-1">📱<br>iPhone 16 Pro<br><strong>₹89,999</strong></div>
+        <div class="floating-card card-2">💻<br>MacBook Air<br><strong>₹99,999</strong></div>
+        <div class="floating-card card-3">⌚<br>Galaxy Watch<br><strong>₹24,999</strong></div>
+        <div class="hero-globe"></div>
+        <div class="hero-ring ring-1"></div>
+        <div class="hero-ring ring-2"></div>
+        <div class="hero-ring ring-3"></div>
+      </div>
+    </div>
+    <div class="hero-slide" style="background: linear-gradient(135deg, #1a0533, #6b21a8, #1a0533);">
+      <div class="hero-content">
+        <div class="hero-badge">👗 FASHION WEEK</div>
+        <h1 class="hero-title">Style That<br><span class="hero-title-accent">Speaks</span><br>Volumes</h1>
+        <p class="hero-subtitle">Luxury fashion at prices that make sense</p>
+        <div class="hero-cta">
+          <a href="products.html?cat=fashion" class="btn-primary">Explore Fashion</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide" style="background: linear-gradient(135deg, #064e3b, #065f46, #0f172a);">
+      <div class="hero-content">
+        <div class="hero-badge">🏠 HOME MAKEOVER</div>
+        <h1 class="hero-title">Transform<br><span class="hero-title-accent">Your Home</span><br>Today</h1>
+        <p class="hero-subtitle">Premium furniture & appliances delivered free</p>
+        <div class="hero-cta">
+          <a href="products.html?cat=furniture" class="btn-primary">Shop Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <span class="dot active" onclick="goToSlide(0)"></span>
+    <span class="dot" onclick="goToSlide(1)"></span>
+    <span class="dot" onclick="goToSlide(2)"></span>
+  </div>
+  <button class="hero-arrow left" onclick="prevSlide()">‹</button>
+  <button class="hero-arrow right" onclick="nextSlide()">›</button>
+</section>
+
+<!-- SKART PLUS BANNER -->
+<section class="plus-banner">
+  <div class="plus-container">
+    <div class="plus-left">
+      <div class="plus-logo">SKart <span>PLUS</span></div>
+      <p>Unlock unlimited benefits with SKart Plus membership</p>
+    </div>
+    <div class="plus-benefits">
+      <div class="plus-benefit"><span>🚀</span> Free Priority Delivery</div>
+      <div class="plus-benefit"><span>💰</span> Extra 10% Cashback</div>
+      <div class="plus-benefit"><span>🎬</span> Free SKart Play</div>
+      <div class="plus-benefit"><span>🎵</span> Free SKart Music</div>
+    </div>
+    <a href="#" class="plus-cta">Try 30 Days FREE →</a>
+  </div>
+</section>
+
+<!-- CATEGORY GRID -->
+<section class="categories-section" id="categories">
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">Shop by <span>Category</span></h2>
+      <p class="section-sub">Browse our massive collection across all categories</p>
+    </div>
+    <div class="categories-grid">
+      <a href="products.html?cat=electronics" class="cat-card" style="--cat-color: #6366f1;">
+        <div class="cat-icon-wrap">📱</div>
+        <div class="cat-info">
+          <h3>Electronics</h3>
+          <p>2M+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=fashion" class="cat-card" style="--cat-color: #ec4899;">
+        <div class="cat-icon-wrap">👗</div>
+        <div class="cat-info">
+          <h3>Fashion</h3>
+          <p>5M+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=home" class="cat-card" style="--cat-color: #f59e0b;">
+        <div class="cat-icon-wrap">🏠</div>
+        <div class="cat-info">
+          <h3>Home & Kitchen</h3>
+          <p>3M+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=beauty" class="cat-card" style="--cat-color: #10b981;">
+        <div class="cat-icon-wrap">💄</div>
+        <div class="cat-info">
+          <h3>Beauty</h3>
+          <p>800K+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=sports" class="cat-card" style="--cat-color: #3b82f6;">
+        <div class="cat-icon-wrap">⚽</div>
+        <div class="cat-info">
+          <h3>Sports</h3>
+          <p>600K+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=grocery" class="cat-card" style="--cat-color: #22c55e;">
+        <div class="cat-icon-wrap">🛒</div>
+        <div class="cat-info">
+          <h3>Grocery</h3>
+          <p>Daily Essentials</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=automotive" class="cat-card" style="--cat-color: #f97316;">
+        <div class="cat-icon-wrap">🚗</div>
+        <div class="cat-info">
+          <h3>Automotive</h3>
+          <p>400K+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+      <a href="products.html?cat=toys" class="cat-card" style="--cat-color: #a855f7;">
+        <div class="cat-icon-wrap">🧸</div>
+        <div class="cat-info">
+          <h3>Toys & Games</h3>
+          <p>300K+ Products</p>
+        </div>
+        <div class="cat-arrow">→</div>
+        <div class="cat-bg-shape"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FLASH DEALS -->
+<section class="flash-deals" id="deals">
+  <div class="section-container">
+    <div class="deals-header">
+      <div class="deals-title-group">
+        <h2>⚡ Flash Deals</h2>
+        <p>Hurry! Offers end in</p>
+      </div>
+      <div class="countdown-timer">
+        <div class="time-block"><span id="hours">08</span><label>HRS</label></div>
+        <div class="time-sep">:</div>
+        <div class="time-block"><span id="minutes">45</span><label>MIN</label></div>
+        <div class="time-sep">:</div>
+        <div class="time-block"><span id="seconds">30</span><label>SEC</label></div>
+      </div>
+      <a href="products.html" class="see-all-btn">See All →</a>
+    </div>
+    <div class="deals-grid" id="dealsGrid">
+      <!-- JS generated -->
+    </div>
+  </div>
+</section>
+
+<!-- TRENDING PRODUCTS -->
+<section class="trending-section">
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">🔥 Trending <span>Right Now</span></h2>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-tab" onclick="filterProducts('electronics', this)">Electronics</button>
+        <button class="filter-tab" onclick="filterProducts('fashion', this)">Fashion</button>
+        <button class="filter-tab" onclick="filterProducts('home', this)">Home</button>
+      </div>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <!-- JS generated -->
+    </div>
+    <div class="load-more-wrap">
+      <button class="load-more-btn" onclick="loadMore()">Load More Products</button>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND SHOWCASE -->
+<section class="brands-section">
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">Top <span>Brands</span></h2>
+    </div>
+    <div class="brands-track-wrapper">
+      <div class="brands-track" id="brandsTrack">
+        <div class="brand-item">Apple</div>
+        <div class="brand-item">Samsung</div>
+        <div class="brand-item">Nike</div>
+        <div class="brand-item">Sony</div>
+        <div class="brand-item">LG</div>
+        <div class="brand-item">Adidas</div>
+        <div class="brand-item">OnePlus</div>
+        <div class="brand-item">Dell</div>
+        <div class="brand-item">HP</div>
+        <div class="brand-item">Philips</div>
+        <div class="brand-item">Boat</div>
+        <div class="brand-item">Realme</div>
+        <div class="brand-item">Apple</div>
+        <div class="brand-item">Samsung</div>
+        <div class="brand-item">Nike</div>
+        <div class="brand-item">Sony</div>
+        <div class="brand-item">LG</div>
+        <div class="brand-item">Adidas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SKART -->
+<section class="why-section">
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">Why <span>SKart?</span></h2>
+      <p class="section-sub">India's most trusted shopping destination</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🚀</div>
+        <h3>Same Day Delivery</h3>
+        <p>Get your orders delivered within hours in 500+ cities across India</p>
+        <div class="why-glow"></div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <h3>100% Secure Payments</h3>
+        <p>Bank-grade encryption for all transactions. Shop with complete peace of mind</p>
+        <div class="why-glow"></div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">↩️</div>
+        <h3>Easy Returns</h3>
+        <p>10-day hassle-free returns. No questions asked. Full refund guaranteed</p>
+        <div class="why-glow"></div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💎</div>
+        <h3>Genuine Products</h3>
+        <p>100% authentic products from verified sellers. AI-powered quality check</p>
+        <div class="why-glow"></div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎧</div>
+        <h3>24/7 Support</h3>
+        <p>Round-the-clock customer support via chat, call, or email</p>
+        <div class="why-glow"></div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <h3>Best Price Guarantee</h3>
+        <p>Found it cheaper elsewhere? We'll match the price. No compromises.</p>
+        <div class="why-glow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">What Our <span>Customers Say</span></h2>
+    </div>
+    <div class="testimonials-slider" id="testimonialsSlider">
+      <div class="testimonial-card active">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">"SKart is absolutely incredible! Got my iPhone delivered in just 4 hours. The packaging was premium and the price was ₹3000 cheaper than anywhere else!"</p>
+        <div class="test-author">
+          <div class="test-avatar">R</div>
+          <div><strong>Rahul Sharma</strong><span>Mumbai</span></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">"The SKart Plus membership is totally worth it. Free delivery, extra cashback, and the customer service is top-notch. Best shopping experience ever!"</p>
+        <div class="test-author">
+          <div class="test-avatar">P</div>
+          <div><strong>Priya Kapoor</strong><span>Delhi</span></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">"I've used Flipkart and Amazon, but SKart blows them both away. The interface is beautiful, search is super fast, and deals are unmatched!"</p>
+        <div class="test-author">
+          <div class="test-avatar">A</div>
+          <div><strong>Arjun Mehta</strong><span>Bangalore</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="test-controls">
+      <button onclick="prevTestimonial()">‹</button>
+      <button onclick="nextTestimonial()">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- APP DOWNLOAD -->
+<section class="app-section">
+  <div class="app-container">
+    <div class="app-left">
+      <div class="app-badge">📱 SKart Mobile App</div>
+      <h2>Shop Smarter,<br>Shop <span>Anywhere</span></h2>
+      <p>Download the SKart app for exclusive app-only deals, faster checkout, and real-time order tracking</p>
+      <div class="app-features">
+        <div class="app-feature">⚡ 2x Faster Checkout</div>
+        <div class="app-feature">🔔 Real-time Alerts</div>
+        <div class="app-feature">🎁 App-Only Deals</div>
+      </div>
+      <div class="app-downloads">
+        <a href="#" class="store-btn">
+          <span class="store-icon">🍎</span>
+          <div><small>Download on the</small><strong>App Store</strong></div>
+        </a>
+        <a href="#" class="store-btn">
+          <span class="store-icon">▶</span>
+          <div><small>Get it on</small><strong>Google Play</strong></div>
+        </a>
+      </div>
+      <div class="app-qr">
+        <div class="qr-box">
+          <div class="qr-grid"></div>
+        </div>
+        <span>Scan QR to download</span>
+      </div>
+    </div>
+    <div class="app-right">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="phone-ui">
+            <div class="phone-header">SKart</div>
+            <div class="phone-search">🔍 Search...</div>
+            <div class="phone-banner"></div>
+            <div class="phone-cats">
+              <div class="phone-cat">📱</div>
+              <div class="phone-cat">👗</div>
+              <div class="phone-cat">🏠</div>
+              <div class="phone-cat">💄</div>
+            </div>
+            <div class="phone-products">
+              <div class="phone-prod"></div>
+              <div class="phone-prod"></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-glow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="newsletter-container">
+    <div class="newsletter-icon">✉️</div>
+    <h2>Stay in the Loop</h2>
+    <p>Subscribe to get exclusive deals, new arrivals and style inspiration</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Enter your email address" id="newsletterEmail">
+      <button onclick="subscribeNewsletter()">Subscribe Now</button>
+    </div>
+    <p class="newsletter-note">No spam. Unsubscribe anytime. 2M+ subscribers love us.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-container">
+      <div class="footer-col footer-brand-col">
+        <div class="footer-logo">S<span>Kart</span></div>
+        <p class="footer-tagline">India's Premium Shopping Destination. 10 Million+ products, 50,000+ brands, delivered to your doorstep.</p>
+        <div class="footer-social">
+          <a href="#" class="social-icon" title="Facebook">f</a>
+          <a href="#" class="social-icon" title="Twitter">t</a>
+          <a href="#" class="social-icon" title="Instagram">in</a>
+          <a href="#" class="social-icon" title="YouTube">yt</a>
+          <a href="#" class="social-icon" title="LinkedIn">li</a>
+        </div>
+        <div class="footer-trust">
+          <span>🔒 SSL Secured</span>
+          <span>✅ ISO Certified</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>About SKart</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Corporate Info</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Sustainability</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Track My Order</a></li>
+          <li><a href="#">Returns & Refunds</a></li>
+          <li><a href="#">Cancellations</a></li>
+          <li><a href="#">Report a Problem</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SKart Plus</h4>
+        <ul>
+          <li><a href="#">Join SKart Plus</a></li>
+          <li><a href="#">Plus Benefits</a></li>
+          <li><a href="#">SKart Play</a></li>
+          <li><a href="#">SKart Music</a></li>
+          <li><a href="#">SKart Pay</a></li>
+          <li><a href="#">Gift Cards</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sell on SKart</h4>
+        <ul>
+          <li><a href="#">Become a Seller</a></li>
+          <li><a href="#">Seller Hub</a></li>
+          <li><a href="#">Advertise</a></li>
+          <li><a href="#">SKart Business</a></li>
+          <li><a href="#">Seller Policies</a></li>
+          <li><a href="#">Seller Support</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-payments">
+    <div class="footer-container">
+      <div class="payment-section">
+        <span>Accepted Payments:</span>
+        <div class="payment-icons">
+          <div class="payment-icon">VISA</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">UPI</div>
+          <div class="payment-icon">PayTM</div>
+          <div class="payment-icon">PhonePe</div>
+          <div class="payment-icon">GPay</div>
+          <div class="payment-icon">EMI</div>
+          <div class="payment-icon">COD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p>© 2024 SKart Private Limited. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Cookie Policy</a></p>
+      <p class="footer-india">🇮🇳 Made with ❤️ in India</p>
+    </div>
+  </div>
+</footer>
+
+<!-- CART NOTIFICATION -->
+<div class="cart-notification" id="cartNotification">
+  <span>✅</span> Item added to cart!
+</div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+<script src="app.js"></script>
+</body>
+</html>
